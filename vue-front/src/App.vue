@@ -1,15 +1,17 @@
 <script setup>
-import { reactive } from 'vue'
+import UpperMenu from "./components/UpperMenu.vue";
 
-const state = reactive({ count: 0 })
-
-function increment() {
-  state.count++
-}
 </script>
 
 <template>
-  <button @click="increment">
-    {{ state.count }}
-  </button>
+  <UpperMenu title="test" />
 </template>
+
+
+<style>
+
+body {
+  margin:0;
+  padding:0;
+}
+</style>
