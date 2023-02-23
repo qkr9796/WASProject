@@ -1,12 +1,33 @@
 
 
-<script setup>
+<script lang='ts' setup>
+
+import { inject } from 'vue'
+import axios from 'axios'
 
 
-const loginData = {
-  loginID: '',
-  loginPW: ''
+const loggedIn:Boolean = inject('loggedIn', false)
+
+const loginData :{loginID:String, loginPW:String} = {
+  loginID: "",
+  loginPW: "",
 }
+
+
+function onLoginClick():void{
+  axios({
+    url: 'http://localhost:8080/login',
+    method: 'post',
+    data:{
+      loginID: loginData.loginID,
+      loginPW: loginData.loginPW
+    }
+  })
+      .then((response) => {
+        console.log(response.data)
+      })
+}
+
 
 
 </script>
@@ -16,7 +37,7 @@ const loginData = {
     <p id="login_text">Login</p>
     <input class="login_field" id="login_id" type="text" placeholder="ID" v-model="loginData.loginID">
     <input class="login_field" id="login_pw" type="password" placeholder="Password" v-model="loginData.loginPW">
-    <button class="login_button"> Login </button>
+    <button class="login_button" @click="onLoginClick"> {{  !loggedIn ? "Login" : "Log Out" }} </button>
   </div>
 
 </template>

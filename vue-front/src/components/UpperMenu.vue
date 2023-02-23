@@ -1,12 +1,14 @@
 
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue';
 import LoginMenu from './LoginMenu';
 
-const props = defineProps(['title'])
+defineProps({
+  title:String
+})
 
-const loginOpen = ref(false)
+const loginOpen = ref<Boolean>(false)
 
 function toggleLogin() {
   loginOpen.value = !loginOpen.value
@@ -18,7 +20,7 @@ function toggleLogin() {
 <template>
   <Transition name="upper" appear>
   <div class="upper_menu">
-    <span id="title">{{props.title}}</span>
+    <span id="title">{{title}}</span>
     <button id="login_button" @click="toggleLogin"> Login </button>
 
     <Transition name="login">

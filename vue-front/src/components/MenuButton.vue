@@ -1,10 +1,11 @@
 
 
-<script setup>
+<script setup lang="ts">
 
-defineProps({
-  isOpen: Boolean
-})
+import { inject } from 'vue'
+
+
+const  isOpen:Boolean = inject('menu',false)
 
 
 </script>
@@ -14,7 +15,8 @@ defineProps({
   <div>
     <Transition>
   <button class="menu-button"
-          v-show="!isOpen"> </button>
+          v-show="!isOpen"
+           @click="isOpen = !isOpen"> </button>
     </Transition>
 
   </div>

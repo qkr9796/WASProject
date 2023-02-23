@@ -1,13 +1,19 @@
 
 
-<script setup>
+<script setup lang="ts">
 
-import {ref} from 'vue'
+import {ref,provide} from 'vue'
 import UpperMenu from "./components/UpperMenu.vue"
 import MenuButton from "./components/MenuButton.vue"
 import MenuPage from './components/MenuPage.vue'
 
-const menuOpen = ref(false)
+const menuOpen = ref<Boolean>(false)
+
+
+const loggedIn = ref<Boolean>(false)
+
+provide('menu', menuOpen)
+provide('loggedIn', loggedIn)
 
 </script>
 
@@ -17,12 +23,10 @@ const menuOpen = ref(false)
   </div>
 
   <div class="menu-button">
-    <MenuButton :is-open="menuOpen" @click="menuOpen = !menuOpen"/>
-    <MenuButton :is-open="menuOpen" @click="menuOpen = !menuOpen"/>
-    <MenuButton :is-open="menuOpen" @click="menuOpen = !menuOpen"/>
+    <MenuButton />
   </div>
 
-  <MenuPage :show="menuOpen" @close="menuOpen = false" />
+  <MenuPage />
 
 </template>
 

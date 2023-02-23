@@ -1,21 +1,20 @@
 
 
-<script setup>
+<script setup lang="ts">
 
-import { ref, computed } from 'vue'
+import { ref, computed, inject } from 'vue'
 import gsap from 'gsap'
 
-defineProps({
-  show : Boolean
-})
 
-const menuList = (['a', 'be', 'c', 'd', 'e', 'f', 'g' ])
+const show:Boolean = inject('menu', false)
 
-const searchText = ref('')
+const menuList: String[] = (['a', 'be', 'c', 'd', 'e', 'f', 'g' ])
 
-const filteredList = computed( () => {
+const searchText  = ref<String>('')
 
-  let data = menuList
+const filteredList = computed<String[]>( () => {
+
+  let data: String[] = menuList
 
   if(searchText.value){
     let key = searchText.value.toLowerCase()
@@ -27,21 +26,22 @@ const filteredList = computed( () => {
   return data
 })
 
-function onEnter(el, done){
+function onEnter(el:SVGElement , done:Function):void{
+  console.log(typeof(done))
   gsap.from(el, {
     opacity: 0,
     height: '0px',
     x: '30px',
-    delay: el.dataset.index * 0.05,
-    onComplete: done
+    delay: parseInt(el.dataset.index as string) * 0.05,
+    onComplete: done as gsap.Callback
   })
 }
-function onLeave(el, done){
+function onLeave(el:SVGElement, done:Function):void{
   gsap.to(el, {
     opacity: 0,
     height: '0px',
-    delay: el.dataset.index * 0.05,
-    onComplete: done
+    delay: parseInt(el.dataset.index as string) * 0.05,
+    onComplete: done as gsap.Callback
   })
 }
 
@@ -56,7 +56,7 @@ function onLeave(el, done){
 
     <div class="menu-page" v-if="show">
 
-      <button class="menu-button" @click="$emit('close')"> </button>
+      <button class="menu-button" @click="show = !show"> </button>
       <input class="menu-search" type="text" v-model="searchText">
 
       <div class="menu-list" >
