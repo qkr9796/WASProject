@@ -2,11 +2,18 @@
 
 <script setup lang="ts">
 
-import { ref, computed, inject } from 'vue'
+import { ref, computed } from 'vue'
 import gsap from 'gsap'
+import index from '../store'
 
 
-const show:Boolean = inject('menu', false)
+//const show:Boolean = inject('menu', false)
+const show = computed<Boolean> ( () => index.state.menuOpen)
+function toggle(){
+  index.commit('toggleMenu')
+}
+
+
 
 const menuList: String[] = (['a', 'be', 'c', 'd', 'e', 'f', 'g' ])
 
@@ -56,7 +63,7 @@ function onLeave(el:SVGElement, done:Function):void{
 
     <div class="menu-page" v-if="show">
 
-      <button class="menu-button" @click="show = !show"> </button>
+      <button class="menu-button" @click="toggle"> </button>
       <input class="menu-search" type="text" v-model="searchText">
 
       <div class="menu-list" >

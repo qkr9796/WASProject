@@ -18,7 +18,6 @@ function toggleLogin() {
 
 
 <template>
-  <Transition name="upper" appear>
   <div class="upper_menu">
     <span id="title">{{title}}</span>
     <button id="login_button" @click="toggleLogin"> Login </button>
@@ -27,21 +26,11 @@ function toggleLogin() {
       <LoginMenu id="login_page" v-show="loginOpen"/>
     </Transition>
   </div>
-  </Transition>
 </template>
 
 
 
 <style scoped>
-
-
-
-.upper_menu{
-  height: 50px;
-  width: 100%;
-  position: fixed;
-  background-color: #42b983;
-}
 
 #title {
   position:absolute;
@@ -70,15 +59,6 @@ function toggleLogin() {
   position:absolute;
   top:150%;
   right: 5%;
-}
-
-.upper-enter-active{
-  transition: all 0.3s ease;
-}
-
-.upper-enter-from{
-  transform: translateY(-50px);
-  opacity: 0;
 }
 
 .login-enter-active,

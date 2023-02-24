@@ -16,11 +16,14 @@ const loginData :{loginID:String, loginPW:String} = {
 
 function onLoginClick():void{
   axios({
-    url: 'http://localhost:8080/login',
+    url: 'http://localhost:8080/loginreq',
     method: 'post',
     data:{
-      loginID: loginData.loginID,
-      loginPW: loginData.loginPW
+      username: loginData.loginID,
+      password: loginData.loginPW
+    },
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
     }
   })
       .then((response) => {

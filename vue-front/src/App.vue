@@ -4,7 +4,6 @@
 
 import {ref,provide} from 'vue'
 import UpperMenu from "./components/UpperMenu.vue"
-import MenuButton from "./components/MenuButton.vue"
 import MenuPage from './components/MenuPage.vue'
 
 const menuOpen = ref<Boolean>(false)
@@ -18,12 +17,11 @@ provide('loggedIn', loggedIn)
 </script>
 
 <template>
-  <div>
-    <UpperMenu title="test" />
-  </div>
 
-  <div class="menu-button">
-    <MenuButton />
+  <UpperMenu class="upper-menu" title="test" />
+
+  <div class="page-content">
+    <router-view />
   </div>
 
   <MenuPage />
@@ -33,11 +31,15 @@ provide('loggedIn', loggedIn)
 
 <style scoped>
 
-.menu-button {
-  position:absolute;
-  left:50%;
-  top:50%;
-  transform:translateX(-50%);
+.upper-menu {
+  background-color: #42b983;
+  position: fixed;
+  height: 50px;
+  width: 100%;
+}
+
+.page-content {
+  padding-top:50px;
 }
 
 </style>

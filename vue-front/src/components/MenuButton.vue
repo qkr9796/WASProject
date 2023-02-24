@@ -2,10 +2,17 @@
 
 <script setup lang="ts">
 
-import { inject } from 'vue'
+//import { inject } from 'vue'
+import index from '../store'
+import {computed} from "vue";
 
 
-const  isOpen:Boolean = inject('menu',false)
+//const  isOpen:Boolean = inject('menu',false)
+const isOpen = computed<Boolean>(() => index.state.menuOpen)
+
+function toggle(){
+  index.commit('toggleMenu')
+}
 
 
 </script>
@@ -16,7 +23,7 @@ const  isOpen:Boolean = inject('menu',false)
     <Transition>
   <button class="menu-button"
           v-show="!isOpen"
-           @click="isOpen = !isOpen"> </button>
+           @click="toggle"> </button>
     </Transition>
 
   </div>
