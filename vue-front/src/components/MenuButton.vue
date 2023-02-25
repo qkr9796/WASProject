@@ -2,16 +2,16 @@
 
 <script setup lang="ts">
 
-//import { inject } from 'vue'
-import index from '../store'
+import {useStore} from 'vuex'
 import {computed} from "vue";
 
 
-//const  isOpen:Boolean = inject('menu',false)
-const isOpen = computed<Boolean>(() => index.state.menuOpen)
+const store = useStore()
+
+const isOpen = computed<Boolean>(() => store.state.menuOpen)
 
 function toggle(){
-  index.commit('toggleMenu')
+  store.commit('toggleMenu')
 }
 
 

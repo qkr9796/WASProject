@@ -1,12 +1,11 @@
 
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
+import { useStore } from 'vuex'
 import LoginMenu from './LoginMenu';
 
-defineProps({
-  title:String
-})
+const title = computed( () => useStore().state.currentPage)
 
 const loginOpen = ref<Boolean>(false)
 

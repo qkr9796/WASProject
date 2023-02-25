@@ -3,30 +3,53 @@
 <script setup lang="ts">
 
 import { ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
 import gsap from 'gsap'
-import index from '../store'
+import {useStore} from 'vuex'
 
 
-//const show:Boolean = inject('menu', false)
-const show = computed<Boolean> ( () => index.state.menuOpen)
+const store = useStore()
+const router  = useRouter()
+
+const show = computed<Boolean> ( () => store.state.menuOpen)
 function toggle(){
-  index.commit('toggleMenu')
+  store.commit('toggleMenu')
 }
 
 
-
-const menuList: String[] = (['a', 'be', 'c', 'd', 'e', 'f', 'g' ])
+const menuList = ([
+  {
+    text: 'main',
+    link: "/"
+  },
+  {
+    text: 'login',
+    link: "/login"
+  },
+  {
+    text: 'register',
+    link: '/register'
+  },
+  {
+    text: 'loginCheck',
+    link: "/loginCheck"
+  },
+  {
+    text: 'authorizedPage',
+    link: "/authorized"
+  },
+])
 
 const searchText  = ref<String>('')
 
-const filteredList = computed<String[]>( () => {
+const filteredList = computed( () => {
 
-  let data: String[] = menuList
+  let data = menuList
 
   if(searchText.value){
     let key = searchText.value.toLowerCase()
     data = data.filter( (row) => {
-      return ( row.toLowerCase().indexOf(key) > -1 )
+      return ( row.text.toLowerCase().indexOf(key) > -1 )
     })
   }
 
@@ -34,10 +57,10 @@ const filteredList = computed<String[]>( () => {
 })
 
 function onEnter(el:SVGElement , done:Function):void{
-  console.log(typeof(done))
   gsap.from(el, {
     opacity: 0,
     height: '0px',
+    marginBottom: '0px',
     x: '30px',
     delay: parseInt(el.dataset.index as string) * 0.05,
     onComplete: done as gsap.Callback
@@ -47,9 +70,14 @@ function onLeave(el:SVGElement, done:Function):void{
   gsap.to(el, {
     opacity: 0,
     height: '0px',
+    marginBottom: '0px',
     delay: parseInt(el.dataset.index as string) * 0.05,
     onComplete: done as gsap.Callback
   })
+}
+
+function onClick(link:string){
+  router.push({path: link})
 }
 
 
@@ -69,8 +97,10 @@ function onLeave(el:SVGElement, done:Function):void{
       <div class="menu-list" >
 
         <TransitionGroup name="menu-list" :css="false" @enter="onEnter" @leave="onLeave" appear>
-        <div class="menu" v-for="(menu, index) in filteredList" :key="menu" :data-index="index">
-          {{ menu }}
+        <div class="menu-container" v-for="(menu, index) in filteredList" :key="menu.text" :data-index="index"  >
+          <div class="menu" @click="onClick(menu.link)">
+            {{ menu.text }}
+          </div>
         </div>
         </TransitionGroup>
 
@@ -98,8 +128,18 @@ function onLeave(el:SVGElement, done:Function):void{
   right: 5%;
 }
 
+.menu-container {
+  height: 30px;
+  width: 80%;
+  margin-bottom: 15px;
+}
+
 .menu {
-  height:20px;
+  border:1px solid grey;
+  border-radius: 50px;
+  padding-left: 5%;
+  text-decoration-line: none;
+  color: #42b983;
 }
 
 
@@ -134,7 +174,7 @@ function onLeave(el:SVGElement, done:Function):void{
 .menu-list {
   position:absolute;
   width:70%;
-  top: 5%;
+  top: 10%;
   left: 10%;
   transform:translateY(50px);
 }

@@ -1,34 +1,28 @@
 
 
-<script lang='ts' setup>
+<script setup lang='ts'>
 
-import { inject } from 'vue'
-import axios from 'axios'
+import {useStore} from 'vuex'
+import {computed} from "vue";
 
-
-const loggedIn:Boolean = inject('loggedIn', false)
+const store = useStore()
 
 const loginData :{loginID:String, loginPW:String} = {
   loginID: "",
   loginPW: "",
 }
 
+const loggedIn = computed(()=> store.state.connection.loggedIn)
 
-function onLoginClick():void{
-  axios({
-    url: 'http://localhost:8080/loginreq',
-    method: 'post',
-    data:{
-      username: loginData.loginID,
-      password: loginData.loginPW
-    },
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded"
-    }
-  })
-      .then((response) => {
-        console.log(response.data)
-      })
+function onLoginClick() {
+  if(!store.state.connection.loggedIn) {
+    store.dispatch('connection/loginRequest', loginData)
+        .then((r) => {
+          if (r.data == 'loginSuccess') {
+            store.commit('connection/setLoggedIn', true)
+          }
+        })
+  }
 }
 
 
@@ -40,9 +34,8 @@ function onLoginClick():void{
     <p id="login_text">Login</p>
     <input class="login_field" id="login_id" type="text" placeholder="ID" v-model="loginData.loginID">
     <input class="login_field" id="login_pw" type="password" placeholder="Password" v-model="loginData.loginPW">
-    <button class="login_button" @click="onLoginClick"> {{  !loggedIn ? "Login" : "Log Out" }} </button>
+    <button class="login_button" @click="onLoginClick"> {{  !loggedIn ? "Login" : "Logout" }} </button>
   </div>
-
 </template>
 
 
@@ -91,7 +84,7 @@ function onLoginClick():void{
   position:absolute;
   top:70%;
   height: 15%;
-  width: 20%;
+  width: 50px;
   border: 1px solid deepskyblue;
   border-radius: 3px;
   background-color : white;

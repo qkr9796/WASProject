@@ -7,7 +7,7 @@
 
 <script setup>
 
-import MenuButton from './MenuButton.vue'
+import MenuButton from '../components/MenuButton.vue'
 
 </script>
 

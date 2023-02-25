@@ -33,10 +33,12 @@ public class SecurityConfig {
                         .anyRequest().permitAll())
                 .csrf().disable()
 
+
                 .formLogin()
-                .loginPage("/login")
                 .loginProcessingUrl("/loginreq")
-                .defaultSuccessUrl("/");
+                .loginPage("/login")
+                .failureUrl("/login?fail=true")
+                .defaultSuccessUrl("/passed", true);
 
 
         return http.build();
