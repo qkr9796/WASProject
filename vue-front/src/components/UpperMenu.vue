@@ -1,28 +1,43 @@
 
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
-import LoginMenu from './LoginMenu';
+import LoginMenu from './LoginMenu.vue'
+import UserInfo from './UserInfo.vue'
 
-const title = computed( () => useStore().state.currentPage)
 
-const loginOpen = ref<Boolean>(false)
+const store = useStore()
 
-function toggleLogin() {
-  loginOpen.value = !loginOpen.value
+const components = {
+  false: LoginMenu,
+  true: UserInfo
 }
+
+
+const title = computed(() => store.state.currentPage)
+const loggedIn = computed(() => store.state.connection.loggedIn)
+
+
+const menuOpen = ref(false)
+
+function toggleMenu() {
+  menuOpen.value = !menuOpen.value
+}
+
 
 </script>
 
 
 <template>
-  <div class="upper_menu">
+  <div class="upper-menu">
     <span id="title">{{title}}</span>
-    <button id="login_button" @click="toggleLogin"> Login </button>
+    <button id="menu-button" @click="toggleMenu"> {{loggedIn ? "User" : "Login"}}</button>
 
-    <Transition name="login">
-      <LoginMenu id="login_page" v-show="loginOpen"/>
+    <Transition name="menu">
+      <div id="menu-page" v-show="menuOpen" >
+        <component :is="components[loggedIn]"/>
+      </div>
     </Transition>
   </div>
 </template>
@@ -30,6 +45,17 @@ function toggleLogin() {
 
 
 <style scoped>
+
+#menu-page {
+  position:absolute;
+  top:150%;
+  right: 5%;
+  background-color: white;
+  border: 1px solid deepskyblue;
+  border-radius: 10px;
+  width:300px;
+  height:200px;
+}
 
 #title {
   position:absolute;
@@ -42,7 +68,7 @@ function toggleLogin() {
 
 }
 
-#login_button {
+#menu-button {
   position:absolute;
   right: 5%;
   top: 25%;
@@ -54,19 +80,13 @@ function toggleLogin() {
   color: deepskyblue;
 }
 
-#login_page {
-  position:absolute;
-  top:150%;
-  right: 5%;
-}
-
-.login-enter-active,
-.login-leave-active {
+.menu-enter-active,
+.menu-leave-active {
   transition: opacity 0.5s ease;
 }
 
-.login-enter-from,
-.login-leave-to {
+.menu-enter-from,
+.menu-leave-to {
   opacity: 0;
 }
 

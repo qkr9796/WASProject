@@ -7,51 +7,55 @@ export interface connectionState {
     baseURL: String,
     ssid: String,
     loggedIn: Boolean
-    userID: String,
-    loginURL: String,
+    userid: String,
 }
 
 export const connection: Module<connectionState, rootState> = {
     namespaced: true,
     state: {
         baseURL: 'http://localhost:8080/',
-        ssid: 'ssid',
+        ssid: '',
         loggedIn: false,
-        userID: 'userid',
-        loginURL: 'loginreq',
+        userid: '',
     },
     getters: {
     },
     mutations: {
         setLoggedIn: function(state, payload){
-            state.loggedIn = payload;
+            state.loggedIn = payload
+        },
+
+        setUserid: function(state, payload){
+            state.userid = payload
         }
     },
     actions: {
         getData: function({rootState, state}, payload) {
             return axios({
+                headers: {
+                    "Content-Type": "json"
+                },
                 url: '' + state.baseURL + payload.url,
                 method: 'get',
-                data: {
-                    data: payload.data,
-                }
+                data: payload.data
             })
         },
 
         postData: function({rootState, state}, payload) {
             return axios({
+                headers: {
+                    "Content-Type": "application/json"
+                },
                 url: '' + state.baseURL + payload.url,
                 method: 'post',
-                data: {
-                    data: payload.data,
-                }
+                data: payload.data
             })
         },
 
-        loginRequest: function({rootState, state} , payload){
+        loginRequest: function({rootState, state, commit} , payload){
             if(!state.loggedIn) {
                 return axios({
-                    url: '' + state.baseURL + state.loginURL,
+                    url: '' + state.baseURL + 'loginreq',
                     method: 'post',
                     data: {
                         username: payload.loginID,
@@ -61,9 +65,29 @@ export const connection: Module<connectionState, rootState> = {
                         "Content-Type": "application/x-www-form-urlencoded"
                     }
                 })
+                    .then((r) => {
+                        if (r.data == 'loginSuccess') {
+                            commit('setLoggedIn', true)
+                            commit('setUserid', payload.loginID)
+                        }
+                    })
             }
         },
+
+        logout: function({state, commit}){
+            if(state.loggedIn){
+                return axios({
+                    url: '' + state.baseURL + 'logout',
+                    method: 'post',
+                })
+                    .then((r) => {
+                        if(r.data == 'logout'){
+                            commit('setLoggedIn', false)
+                        }
+                    })
+            }
+        }
     },
     modules: {
-    }
+    },
 }

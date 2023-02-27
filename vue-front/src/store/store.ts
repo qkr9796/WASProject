@@ -1,5 +1,6 @@
 import { createStore } from 'vuex'
 import  {connection} from './module/connection'
+import createPersistedState from "vuex-persistedstate";
 
 export interface rootState {
   menuOpen: Boolean
@@ -28,7 +29,15 @@ const store = createStore<rootState>({
   },
   modules: {
     connection: connection,
-  }
+  },
+  plugins: [
+
+      createPersistedState({
+        paths: ["connection"],
+        storage: window.sessionStorage
+      })
+  ]
+
 })
 
 export default store

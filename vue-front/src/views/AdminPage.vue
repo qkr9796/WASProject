@@ -12,6 +12,13 @@
 
     <p> {{ res }} </p>
 
+    <div>
+      <p> create Key </p>
+      <input type="text" v-model="requestKey" placeholder="request key">
+      <button @click="onRequestKey"> request </button>
+      <p> created : {{ keyResponse }}</p>
+    </div>
+
     <MenuButton/>
 
 
@@ -33,6 +40,10 @@ const inputText = ref('')
 const inputData = ref('')
 const res = ref('')
 
+const requestKey = ref('')
+const keyResponse = ref('')
+
+
 const loggedIn = computed( () => store.state.connection.loggedIn)
 
 if(!loggedIn.value){
@@ -51,6 +62,13 @@ function onPost() {
   store.dispatch("connection/postData", {url: inputText.value, data: inputData.value})
       .then((r) => {
         res.value = r.data
+      })
+}
+
+function onRequestKey(){
+  store.dispatch('connection/postData', {url: 'createKey', data: { key:requestKey.value}})
+      .then((r) => {
+        keyResponse.value = r.data
       })
 }
 

@@ -7,6 +7,7 @@ import {computed} from "vue";
 
 const store = useStore()
 
+
 const loginData :{loginID:String, loginPW:String} = {
   loginID: "",
   loginPW: "",
@@ -15,48 +16,36 @@ const loginData :{loginID:String, loginPW:String} = {
 const loggedIn = computed(()=> store.state.connection.loggedIn)
 
 function onLoginClick() {
-  if(!store.state.connection.loggedIn) {
+  if(!loggedIn.value) {
     store.dispatch('connection/loginRequest', loginData)
-        .then((r) => {
-          if (r.data == 'loginSuccess') {
-            store.commit('connection/setLoggedIn', true)
-          }
-        })
+  }
+  else {
+    store.dispatch('connection/logout')
   }
 }
-
 
 
 </script>
 
 <template>
-  <div class="login_page">
-    <p id="login_text">Login</p>
-    <input class="login_field" id="login_id" type="text" placeholder="ID" v-model="loginData.loginID">
-    <input class="login_field" id="login_pw" type="password" placeholder="Password" v-model="loginData.loginPW">
-    <button class="login_button" @click="onLoginClick"> {{  !loggedIn ? "Login" : "Logout" }} </button>
+  <div>
+    <p id="login-text">Login</p>
+    <input class="login-field" id="login-id" type="text" placeholder="ID" v-model="loginData.loginID">
+    <input class="login-field" id="login-pw" type="password" placeholder="Password" v-model="loginData.loginPW">
+    <button class="login-button" @click="onLoginClick"> {{  !loggedIn ? "Login" : "Logout" }} </button>
   </div>
 </template>
 
 
 <style scoped>
 
-.login_page {
-  position:relative;
-  background-color: white;
-  border: 1px solid deepskyblue;
-  border-radius: 10px;
-  width:300px;
-  height:200px;
-}
-
-#login_text {
+#login-text {
   position: absolute;
   left:50%;
   transform:translateX(-50%);
 }
 
-.login_field {
+.login-field {
   position:absolute;
   height:20px;
   width: 70%;
@@ -67,20 +56,20 @@ function onLoginClick() {
   transform:translateX(-50%);
 }
 
-.login_field:focus {
+.login-field:focus {
   outline: none;
   box-shadow: 0 0 5px deepskyblue;
 }
 
-#login_id{
+#login-id{
   top:30%;
 }
 
-#login_pw{
+#login-pw{
   top: 50%;
 }
 
-.login_button {
+.login-button {
   position:absolute;
   top:70%;
   height: 15%;
@@ -92,7 +81,7 @@ function onLoginClick() {
   right:15%;
 }
 
-.login_button:hover {
+.login-button:hover {
   background-color: deepskyblue;
   color: white;
 }

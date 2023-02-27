@@ -27,16 +27,12 @@ const menuList = ([
     link: "/login"
   },
   {
-    text: 'register',
-    link: '/register'
+    text: 'user',
+    link: '/user'
   },
   {
-    text: 'loginCheck',
-    link: "/loginCheck"
-  },
-  {
-    text: 'authorizedPage',
-    link: "/authorized"
+    text: 'adminPage',
+    link: "/admin"
   },
 ])
 

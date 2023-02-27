@@ -9,7 +9,7 @@ import MenuPage from './components/MenuPage.vue'
 
 <template>
 
-  <UpperMenu class="upper-menu" title="test" />
+  <UpperMenu class="upper-menu"  />
 
   <div class="page-content">
     <router-view />

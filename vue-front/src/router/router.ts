@@ -3,7 +3,8 @@
 import {createWebHistory, createRouter} from 'vue-router'
 import HomePage from '../views/HomePage.vue'
 import LoginPage from '../views/LoginPage.vue'
-import AuthorizedPage from '../views/AuthorizedPage.vue'
+import AdminPage from '../views/AdminPage.vue'
+import UserPage from '../views/UserPage.vue'
 import store from '../store/store'
 
 
@@ -17,12 +18,12 @@ const routes = [
         component: LoginPage
     },
     {
-        path: "/register",
-        component: LoginPage
+        path: "/user",
+        component: UserPage
     },
     {
-        path: '/authorized',
-        component: AuthorizedPage
+        path: '/admin',
+        component: AdminPage
     }
 ]
 
@@ -36,24 +37,5 @@ router.beforeEach( function(to, from, next) {
     next()
 })
 
-/*
-router.beforeEach(function(to, from, next) {
-    console.log(to.path)
-    if(to.path == '/loginCheck'){
-        console.log("loginCheck")
-        store.dispatch('connection/getData', {url: 'passed'}).then((r) => {
-            if(r.data == 'needLogin')
-                next('/login')
-            else if(r.data == 'LoginRequest') {
-                store.commit('connection/setLoggedIn', true)
-                console.log("loggedIn")
-                next('/')
-            }
-        })
-    } else {
-        next();
-    }
-
-})*/
 
 export default router;
